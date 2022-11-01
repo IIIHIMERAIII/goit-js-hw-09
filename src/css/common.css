@@ -16,3 +16,42 @@ img {
   display: block;
   max-width: 100%;
 }
+
+.timer__input {
+  width: 200px;
+  height: 30px;
+}
+
+.timer__btn {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: transparent;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.timer {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.value {
+  font-size: 25px;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 700;
+}
