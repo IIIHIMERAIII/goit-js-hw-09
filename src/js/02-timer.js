@@ -7,52 +7,50 @@ const hoursOutRef = document.querySelector("[data-hours]");
 const minutesOutRef = document.querySelector("[data-minutes]");
 const secondsOutRef = document.querySelector("[data-seconds]");
 let intervalId = null;
+let selectTimeTagret = 0;
 
 const options = {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
-    onClose(selectedDates) {
+    onClose(selectedTime) {
         let currentDate = Date.now();
-        let storageDate = selectedDates[0] - currentDate;
-        if (storageDate < 0) {
+        let selectedDate = selectedTime[0].getTime();
+        if (selectedDate <= currentDate) {
             btnStartRef.disable = true;
             window.alert("Please choose a future date");
         }
         else {
             btnStartRef.disabel = false;
+            selectTimeTagret = selectedDate
         }
-
-        function runTimer() {
-            btnStartRef.disabled = true;
-            inputRef.disabled = true;
-            getTime(selectedDates);
-            intervalId = setInterval(() => {
-                getTime(selectedDates);
-            }, 1000);
-        }
-        
-        btnStartRef.addEventListener("click", runTimer);
-    }
+    },
 };
 
+btnStartRef.addEventListener("click", runTimer)
 
-function getTime(selectedDates) {
-    let currentDate = Date.now();
-    let storageDate = selectedDates[0] - currentDate;
+function runTimer() {
+    getTime();
+    btnStartRef.disabled = true;
+    inputRef.disabled = true;
+    const intervalId = setInterval(() => {
+        getTime(intervalId);
+    }, 1000)
+};
 
-    if (storageDate <= 1000)
-    {
+function getTime(intervalId) {
+    const deltatime = selectTimeTagret - Date.now();
+    if (deltatime < 0) {
         clearInterval(intervalId);
     }
     else {
-        updateTime(storageDate);
+        const time = convertMs(deltatime);
+        updateTime(time)
     }
 }
 
-function updateTime(storageDate) {
-    const { days, hours, minutes, seconds } = convertMs(storageDate);
+function updateTime({days, hours, minutes, seconds}) {;
     daysOutRef.textContent = days;
     hoursOutRef.textContent = hours;
     minutesOutRef.textContent = minutes;
@@ -78,4 +76,5 @@ function convertMs(ms) {
 }
 }
 
-flatpickr(inputRef, options )
+flatpickr(inputRef, options)
+
